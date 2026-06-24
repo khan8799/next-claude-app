@@ -9,6 +9,15 @@
                         "command": "node ./claude-hooks/read_hook.ts"
                     }
                 ]
+            },
+            {
+                "matcher": "Bash",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "node ./claude-hooks/pr_review_hook.ts"
+                    }
+                ]
             }
         ],
         "PostToolUse": [
