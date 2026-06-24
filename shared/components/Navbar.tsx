@@ -2,154 +2,11 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-
-interface DropdownItem {
-  label: string
-  href: string
-  description: string
-}
-
-interface NavItem {
-  label: string
-  href?: string
-  dropdown?: DropdownItem[]
-}
-
-const navItems: NavItem[] = [
-  {
-    label: 'Solutions',
-    dropdown: [
-      { label: 'AI & Machine Learning', href: '/solutions/ai-ml', description: 'Intelligent automation and predictive analytics' },
-      { label: 'Cloud & DevOps', href: '/solutions/cloud', description: 'Scalable architecture and CI/CD pipelines' },
-      { label: 'Digital Platforms', href: '/solutions/digital', description: 'End-to-end digital transformation' },
-      { label: 'Data & Analytics', href: '/solutions/data', description: 'Data engineering and business intelligence' },
-    ],
-  },
-  {
-    label: 'Industries',
-    dropdown: [
-      { label: 'Financial Services', href: '/industries/financial', description: 'FinTech, banking, and insurance solutions' },
-      { label: 'Healthcare & Life Sciences', href: '/industries/healthcare', description: 'Digital health and medical software' },
-      { label: 'Retail & Consumer Goods', href: '/industries/retail', description: 'Omnichannel commerce platforms' },
-      { label: 'Technology & Telecom', href: '/industries/technology', description: 'Software products for tech companies' },
-    ],
-  },
-  { label: 'About', href: '/about' },
-  { label: 'Insights', href: '/insights' },
-  { label: 'Careers', href: '/careers' },
-]
-
-// ─── Sub-components ───────────────────────────────────────────────────────────
-
-function EpamLogo() {
-  return (
-    <Link href="/" aria-label="EPAM Home" className="flex items-center gap-2.5 shrink-0">
-      {/* Orange accent bar — EPAM brand identifier */}
-      <span className="block w-1.5 h-7 rounded-sm bg-[#FF6C37]" aria-hidden="true" />
-      <span className="text-xl font-black tracking-widest text-gray-900 leading-none">
-        EPAM
-      </span>
-      <span className="hidden sm:block text-[10px] font-semibold tracking-[0.2em] text-gray-400 uppercase leading-none mt-0.5 self-end mb-0.5">
-        Systems
-      </span>
-    </Link>
-  )
-}
-
-function ChevronDown({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path
-        fillRule="evenodd"
-        d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06z"
-        clipRule="evenodd"
-      />
-    </svg>
-  )
-}
-
-function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
-  return (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      {isOpen ? (
-        <>
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </>
-      ) : (
-        <>
-          <line x1="3" y1="7" x2="21" y2="7" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="17" x2="21" y2="17" />
-        </>
-      )}
-    </svg>
-  )
-}
-
-// Desktop dropdown panel — renders a 2-column grid of labelled links
-function DropdownPanel({ items, isOpen }: { items: DropdownItem[]; isOpen: boolean }) {
-  return (
-    <div
-      className={`
-        absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[480px]
-        bg-white rounded-2xl shadow-2xl shadow-gray-200/80 ring-1 ring-gray-100
-        transition-all duration-200 origin-top
-        ${isOpen ? 'opacity-100 scale-y-100 pointer-events-auto' : 'opacity-0 scale-y-95 pointer-events-none'}
-      `}
-      role="menu"
-    >
-      {/* Dropdown caret */}
-      <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 rounded-tl-sm ring-1 ring-gray-100" />
-      <ul className="relative grid grid-cols-2 gap-1 p-3">
-        {items.map((item) => (
-          <li key={item.href} role="none">
-            <Link
-              href={item.href}
-              role="menuitem"
-              className="
-                group flex flex-col gap-0.5 px-4 py-3 rounded-xl
-                hover:bg-orange-50 transition-colors duration-150
-              "
-            >
-              <span className="text-sm font-semibold text-gray-800 group-hover:text-[#FF6C37] transition-colors">
-                {item.label}
-              </span>
-              <span className="text-xs text-gray-400 group-hover:text-gray-500 transition-colors leading-snug">
-                {item.description}
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-      {/* Footer strip */}
-      <div className="border-t border-gray-100 px-6 py-3 flex justify-between items-center rounded-b-2xl bg-gray-50/60">
-        <span className="text-xs text-gray-400">Explore all capabilities</span>
-        <svg className="w-4 h-4 text-[#FF6C37]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-        </svg>
-      </div>
-    </div>
-  )
-}
-
-// ─── Main Navbar ──────────────────────────────────────────────────────────────
+import CompanyLogo from './CompanyLogo'
+import ChevronDown from './icons/ChevronDownIcon'
+import HamburgerIcon from './icons/HamburgerIcon'
+import DropdownPanel from './DropdownPanel'
+import { navItems } from '../constants/navbar.constant'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -215,7 +72,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* ── Logo ── */}
-          <EpamLogo />
+          <CompanyLogo />
 
           {/* ── Desktop nav items ── */}
           <ul className="hidden md:flex items-center gap-0.5" role="menubar">
