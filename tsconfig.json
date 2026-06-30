@@ -19,13 +19,18 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./app/*"],
+      "@admin/*": ["./modules/admin/*"],
+      "@manager/*": ["./modules/manager/*"],
+      "@shared/*": ["./shared/*"]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
+    "**/*.js",
     "**/*.tsx",
+    "**/*.jsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
