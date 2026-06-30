@@ -2,11 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import CompanyLogo from './CompanyLogo'
-import ChevronDown from './icons/ChevronDownIcon'
-import HamburgerIcon from './icons/HamburgerIcon'
-import DropdownPanel from './DropdownPanel'
-import { navItems } from '../constants/navbar.constant'
+import { CompanyLogo, DropdownPanel } from "@shared/components";
+import { HamburgerIcon, ChevronDownIcon } from "@shared/components/icons";
+import { navItems } from '@shared/constants/navbar.constant'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -96,7 +94,7 @@ export default function Navbar() {
                       `}
                     >
                       {item.label}
-                      <ChevronDown
+                      <ChevronDownIcon
                         className={`transition-transform duration-200 ${
                           openDropdown === item.label ? 'rotate-180 text-[#FF6C37]' : 'text-gray-400'
                         }`}
@@ -199,7 +197,7 @@ export default function Navbar() {
                     "
                   >
                     {item.label}
-                    <ChevronDown
+                    <ChevronDownIcon
                       className={`transition-transform duration-200 text-gray-400 ${
                         mobileExpandedItem === item.label ? 'rotate-180' : ''
                       }`}
